@@ -24,19 +24,18 @@ let StateCarMovement = {
     if (this.carBlue.direction.y == 0)
       return;
 
-    // this is forward for our purposes
-    if (this.carBlue.direction.y < 0) {
+    if (this.carBlue.direction.y > 0) { // this is forward
       this.carBlue.angle += this.carBlue.direction.x * this.carBlue.angularSpeed * deltaTime;
       cos = Math.cos(this.carBlue.rotation);
       sin = Math.sin(this.carBlue.rotation);
     }
-    else {
+    else { // this is reverse
       this.carBlue.angle += -this.carBlue.direction.x * this.carBlue.angularSpeed * deltaTime;
       cos = Math.cos(-this.carBlue.rotation);
       sin = Math.sin(-this.carBlue.rotation);
     }
 
-    this.carBlue.y += cos * this.carBlue.speed * deltaTime * this.carBlue.direction.y;
+    this.carBlue.y += cos * this.carBlue.speed * deltaTime * -this.carBlue.direction.y;
     this.carBlue.x += sin * this.carBlue.speed * this.time.physicsElapsed;
       
   },
@@ -47,8 +46,8 @@ let StateCarMovement = {
     let left = this.keyboard.isDown(Phaser.Keyboard.LEFT);
 
     let vertical = 0;
-    if (up) vertical -= 1;
-    if (down) vertical += 1;
+    if (up) vertical += 1;
+    if (down) vertical -= 1;
     let horizontal = 0;
     if (left) horizontal -= 1;
     if (right) horizontal += 1;
