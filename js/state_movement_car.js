@@ -2,6 +2,27 @@ let StateMovementCar = {
   preload: function() {
     this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.load.image('carBlue', 'img/car_blue_1.png');
+    const imageKeys = [
+      'arrowDown',
+      'arrowLeft',
+      'arrowRight',
+      'arrowUp',
+      'arrowDownW',
+      'arrowLeftW',
+      'arrowRightW',
+      'arrowUpW' 
+    ];
+    const imageUrls = [
+      'img/arrowDown.png',
+      'img/arrowLeft.png',
+      'img/arrowRight.png',
+      'img/arrowUp.png',
+      'img/arrowDownW.png',
+      'img/arrowLeftW.png',
+      'img/arrowRightW.png',
+      'img/arrowUpW.png'
+    ];
+    this.load.images(imageKeys, imageUrls);
   },
   create: function() {
     this.keyboard = this.input.keyboard;
@@ -14,12 +35,40 @@ let StateMovementCar = {
     this.carBlue.angularSpeed = 180;
     this.carBlue.direction = new Phaser.Point();
     this.carBlue.forward = new Phaser.Point();
+
+
+    this.arrowWhite = [];
+    this.arrowWhite[0] = this.add.image(0, 40, 'arrowLeftW');
+    this.arrowWhite[1] = this.add.image(40, 40, 'arrowDownW');
+    this.arrowWhite[2] = this.add.image(80, 40, 'arrowRightW');
+    this.arrowWhite[3] = this.add.image(40, 0, 'arrowUpW');
+
+    this.arrowBlack = [];
+    this.arrowBlack[0] = this.add.image(0, 40, 'arrowLeft');
+    this.arrowBlack[1] = this.add.image(40, 40, 'arrowDown');
+    this.arrowBlack[2] = this.add.image(80, 40, 'arrowRight');
+    this.arrowBlack[3] = this.add.image(40, 0, 'arrowUp');
+  },
+  handleArrows: function() {
+    let i;
+    for (i = 0; i < this.arrowBlack.length; i++) {
+      this.arrowBlack[i].kill();
+    }
+    if (this.keyboard.isDown(Phaser.Keyboard.RIGHT)) this.arrowBlack[2].revive();
+    if (this.keyboard.isDown(Phaser.Keyboard.LEFT)) this.arrowBlack[0].revive();
+    if (this.keyboard.isDown(Phaser.Keyboard.UP)) this.arrowBlack[3].revive();
+    if (this.keyboard.isDown(Phaser.Keyboard.DOWN)) this.arrowBlack[1].revive();
   },
   update: function() {
+    
     let deltaTime = this.time.physicsElapsed;
     let cos, sin, rotation;
-
+    
+    this.handleArrows();
     this.getInput();
+
+    // Comment this one below
+    // this.carBlue.angle += this.carBlue.direction.x * this.carBlue.angularSpeed * deltaTime;
 
     if (this.carBlue.direction.y == 0)
       return;

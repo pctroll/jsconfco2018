@@ -55,50 +55,39 @@ let StateMovement = {
     this.textSpeed.anchor.set(0.5);
     this.textSpeed.align = 'center';
     this.player.addChild(this.textSpeed);
-    // this.textSpeed.visible = false;
-
-    // this.player.kill();
-    // this.killArrows();
-
+    
+    
+    
     this.keyboard = this.input.keyboard;
     this.player.direction = new Phaser.Point();
-
-    this.enemy = this.add.image(0, this.world.centerY, 'ufoRed');
-    this.enemy.anchor.set(0, 0.5);
-    this.enemy.amplitude = 600;
-    this.enemy.timeMultiplier = 6;
-    this.enemy.speed = 400;
-    this.enemy.kill();
-
-    // this.enemy.steering = new Steering();
-    // this.enemy.speed = 200;
-    // this.enemy.velocity = new Phaser.Point();
-
+    
   },
   update: function() {
     this.handleArrows();
 
     // INPUT NAIVE
-    // this.move();
-
+    this.move();
+    
     // INPUT PROPER
     // this.movePlayer();
-
-    // Recalculate speed
-    // this.computeSpeed();
-
+    
+    // Show speed on UFO
+    // comment this one
+    this.textSpeed.visible = false;
+    this.computeSpeed();
+    
     // AUTOMATIC MOVEMENT
     // this.enemyMovement();
-
-
+    
+    
   },
-  killArrows: function() {
-    let i;
-    for (i = 0; i < this.arrowBlack.length; i++) {
-      this.arrowBlack[i].kill();
-      this.arrowWhite[i].kill();
-    }
-  },
+  // killArrows: function() {
+  //   let i;
+  //   for (i = 0; i < this.arrowBlack.length; i++) {
+  //     this.arrowBlack[i].kill();
+  //     this.arrowWhite[i].kill();
+  //   }
+  // },
   handleArrows: function() {
     let i;
     for (i = 0; i < this.arrowBlack.length; i++) {
