@@ -4,7 +4,6 @@ function Steering () {
 }
 
 // var Behavior = function() {
-
 // };
 
 // Behavior.prototype = {

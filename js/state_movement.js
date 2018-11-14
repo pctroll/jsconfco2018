@@ -82,10 +82,10 @@ let StateMovement = {
     // this.move();
 
     // INPUT PROPER
-    this.movePlayer();
+    // this.movePlayer();
 
     // Recalculate speed
-    this.computeSpeed();
+    // this.computeSpeed();
 
     // AUTOMATIC MOVEMENT
     // this.enemyMovement();

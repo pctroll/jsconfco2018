@@ -1,4 +1,4 @@
-let StateCarMovement = {
+let StateMovementCar = {
   preload: function() {
     this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.load.image('carBlue', 'img/car_blue_1.png');
