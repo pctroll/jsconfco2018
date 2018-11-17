@@ -9,5 +9,5 @@ game.state.add('StateMovementCar', StateMovementCar);
 
 // game.state.start('StateMovement');
 // game.state.start('StateMovementEnemy');
-game.state.start('StateMovementCar');
-// game.state.start('StateSeekFlee');
+// game.state.start('StateMovementCar');
+game.state.start('StateSeekFlee');

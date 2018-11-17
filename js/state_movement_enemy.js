@@ -42,20 +42,25 @@ let StateMovementEnemy = {
     this.arrowBlack[2] = this.add.image(80, 40, 'arrowRight');
     this.arrowBlack[3] = this.add.image(40, 0, 'arrowUp');
     
-    // this.killArrows();
 
     this.keyboard = this.input.keyboard;
-    // this.player.direction = new Phaser.Point();
+
+    this.speedStep = 25;
+    this.amplitudeStep = 25;
+    this.arrowUp = this.input.keyboard.addKey(Phaser.Keyboard.UP);
+    this.arrowDw = this.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+    this.arrowLt = this.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+    this.arrowRt = this.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+    
+    this.arrowUp.onDown.add(this.addSpeed, this, this.speedStep);
     
 
     this.enemy = this.add.image(0, this.world.centerY, 'ufoRed');
     this.enemy.anchor.set(0, 0.5);
-    this.enemy.amplitude = 600;
+    this.enemy.amplitude = 100;
     this.enemy.timeMultiplier = 6;
-    this.enemy.speed = 400;
-    // this.enemy.kill();
+    // this.enemy.speed = 400;
 
-    // this.enemy.steering = new Steering();
     this.enemy.speed = 200;
     this.enemy.velocity = new Phaser.Point();
 
@@ -67,8 +72,8 @@ let StateMovementEnemy = {
     this.textAmplitude = this.add.text(140, 46, 'Amplitude: ' + this.enemy.amplitude, textStyle);
 
   },
-  keydown: function(obj) {
-    console.log(obj);
+  addSpeed: function(step) {
+    console.log(step);
   },
   update: function() {
     this.handleArrows();
@@ -120,12 +125,22 @@ let StateMovementEnemy = {
 
     if (!this.enemy.alive) return;
 
-    this.enemy.x += this.enemy.speed * this.time.physicsElapsed;
-    // this.enemy.y = this.world.centerY;
-    // this.enemy.y += Math.sin(this.time.totalElapsedSeconds() * this.enemy.timeMultiplier) * this.enemy.amplitude;
     
+    this.enemy.x += this.enemy.speed * this.time.physicsElapsed;
+    
+    // Put the enemy on the main path (center)
+    // y = center + sin(time) * amplitude
+    // 
+    this.enemy.y = this.world.centerY;
+    this.enemy.y += Math.sin(this.time.totalElapsedSeconds() * this.enemy.timeMultiplier) * this.enemy.amplitude;
+    
+    
+
+
     if (this.enemy.x > this.world.width) {
       this.enemy.y = Math.random() * this.world.height;
+      // comment this one below for random
+      // this.enemy.y = this.world.centerY;
       this.enemy.x = -this.enemy.width;
     }
   }

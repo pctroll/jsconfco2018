@@ -2,6 +2,9 @@ let StateMovementCar = {
   preload: function() {
     this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.load.image('carBlue', 'img/car_blue_1.png');
+    this.load.image('asphalt', 'img/road_asphalt22.png');
+    this.load.image('oil', 'img/oil.png');
+    this.load.image('start', 'img/arrow_yellow.png');
     const imageKeys = [
       'arrowDown',
       'arrowLeft',
@@ -25,6 +28,14 @@ let StateMovementCar = {
     this.load.images(imageKeys, imageUrls);
   },
   create: function() {
+    this.background = this.add.tileSprite(0, 0, this.world.width, this.world.height, 'asphalt');
+    this.oil1 = this.add.image(200, 120, 'oil');
+    this.start = this.add.image(0, 0, 'start');
+    this.start.anchor.set(0.5);
+    this.start.scale.set(0.5);
+    this.start.x = this.world.centerX;
+
+
     this.keyboard = this.input.keyboard;
     this.carBlue = this.add.image(0, 0, 'carBlue');
     this.carBlue.scale.set(0.5);
@@ -34,7 +45,8 @@ let StateMovementCar = {
     this.carBlue.speed = 300;
     this.carBlue.angularSpeed = 180;
     this.carBlue.direction = new Phaser.Point();
-    this.carBlue.forward = new Phaser.Point();
+
+    this.start.y = this.carBlue.y - this.carBlue.height;
 
 
     this.arrowWhite = [];
@@ -62,7 +74,7 @@ let StateMovementCar = {
   update: function() {
     
     let deltaTime = this.time.physicsElapsed;
-    let cos, sin, rotation;
+    let cos = 0, sin = 0, rotation;
     
     this.handleArrows();
     this.getInput();
@@ -70,22 +82,36 @@ let StateMovementCar = {
     // Comment this one below
     // this.carBlue.angle += this.carBlue.direction.x * this.carBlue.angularSpeed * deltaTime;
 
+    
     if (this.carBlue.direction.y == 0)
       return;
+    
+    // Uncomment this one when commenting the big if below
+    // this.carBlue.angle += this.carBlue.direction.x * this.carBlue.angularSpeed * deltaTime;
+    // cos = Math.cos(this.carBlue.rotation);
+    // sin = Math.sin(this.carBlue.rotation);
 
-    if (this.carBlue.direction.y > 0) { // this is forward
+
+
+
+    if (this.carBlue.direction.y > 0) {
+      // this is forward
       this.carBlue.angle += this.carBlue.direction.x * this.carBlue.angularSpeed * deltaTime;
       cos = Math.cos(this.carBlue.rotation);
       sin = Math.sin(this.carBlue.rotation);
     }
-    else { // this is reverse
+    else {
+      // this is reverse
+      // so we invert the direction by using the negative angle
       this.carBlue.angle += -this.carBlue.direction.x * this.carBlue.angularSpeed * deltaTime;
       cos = Math.cos(-this.carBlue.rotation);
       sin = Math.sin(-this.carBlue.rotation);
     }
 
+    // Y = cos(alpha) * speed * time * -direction (because Y is down and forward is up)
     this.carBlue.y += cos * this.carBlue.speed * deltaTime * -this.carBlue.direction.y;
-    this.carBlue.x += sin * this.carBlue.speed * this.time.physicsElapsed;
+    this.carBlue.x += sin * this.carBlue.speed * deltaTime;
+    // X = sin(alpha) * speed * time
       
   },
   getInput: function() {

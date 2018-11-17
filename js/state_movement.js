@@ -66,28 +66,18 @@ let StateMovement = {
     this.handleArrows();
 
     // INPUT NAIVE
-    this.move();
+    // this.move();
     
     // INPUT PROPER
-    // this.movePlayer();
+    this.movePlayer();
     
     // Show speed on UFO
     // comment this one
-    this.textSpeed.visible = false;
+    // this.textSpeed.visible = false;
     this.computeSpeed();
-    
-    // AUTOMATIC MOVEMENT
-    // this.enemyMovement();
     
     
   },
-  // killArrows: function() {
-  //   let i;
-  //   for (i = 0; i < this.arrowBlack.length; i++) {
-  //     this.arrowBlack[i].kill();
-  //     this.arrowWhite[i].kill();
-  //   }
-  // },
   handleArrows: function() {
     let i;
     for (i = 0; i < this.arrowBlack.length; i++) {
@@ -99,9 +89,11 @@ let StateMovement = {
     if (this.keyboard.isDown(Phaser.Keyboard.DOWN)) this.arrowBlack[1].revive();
   },
   move: function() {
+    // x += speed * deltaTime | RIGHT
     if (this.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
       this.player.x += this.player.speed * this.time.physicsElapsed;
     }
+    // x -= speed * deltaTime | LEFT
     else if (this.keyboard.isDown(Phaser.Keyboard.LEFT)) {
       this.player.x -= this.player.speed * this.time.physicsElapsed;
     }
@@ -112,11 +104,13 @@ let StateMovement = {
     }
   },
   movePlayer: function() {
+    // get the input in the axis
     let up = this.keyboard.isDown(Phaser.Keyboard.UP);
     let down = this.keyboard.isDown(Phaser.Keyboard.DOWN);
     let right = this.keyboard.isDown(Phaser.Keyboard.RIGHT);
     let left = this.keyboard.isDown(Phaser.Keyboard.LEFT);
 
+    // compute the velocity vector (direction)
     let vertical = 0;
     if (up) vertical -= 1;
     if (down) vertical += 1;
@@ -124,32 +118,19 @@ let StateMovement = {
     if (left) horizontal -= 1;
     if (right) horizontal += 1;
 
+    // apply velocity to the player movement
     this.player.direction.x = horizontal;
     this.player.direction.y = vertical;
+    // IMPORTANT: normalize
     this.player.direction.normalize();
 
+    // x += directionX * speed * deltaTime
+    // y += directionY * speed * deltaTime
     this.player.x += this.player.direction.x * this.player.speed * this.time.physicsElapsed;
     this.player.y += this.player.direction.y * this.player.speed * this.time.physicsElapsed;
   },
   computeSpeed: function() {
     let dist = Phaser.Point.distance(this.player.position, this.player.previousPosition, true);
     this.textSpeed.text = dist;
-  },
-  enemyMovement: function() {
-
-    if (!this.enemy.alive) return;
-
-    this.enemy.x += this.enemy.speed * this.time.physicsElapsed;
-    this.enemy.y = this.world.centerY;
-    this.enemy.y += Math.sin(this.time.totalElapsedSeconds() * this.enemy.timeMultiplier) * this.enemy.amplitude;
-
-    
-    
-    
-    
-    if (this.enemy.x > this.world.width) {
-      this.enemy.x = -this.enemy.width;
-      // this.enemy.y = Math.random() * this.world.height;
-    }
   }
 };
